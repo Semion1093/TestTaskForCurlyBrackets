@@ -5,10 +5,11 @@ using System.Linq;
 
 namespace AttackSolver
 {
-    public class RookCoordinatesCounter : IRookCoordinatesCounter
+    public class RookCoordinatesCounter : IMovePiece
     {
-        public int GetNumberOfCoordinates(Size boardSize, Point startCoords, Point[] obstacles)
-        {
+
+        public int GetAvaliableCoordinatesCount(Size boardSize, Point startCoords, Point[] obstacles)
+        {    
             var coordinates = new List<Point>();
 
             //Move up
@@ -16,9 +17,9 @@ namespace AttackSolver
             {
                 coordinates.Add(new Point(startCoords.X, y));
 
-                if (obstacles.Contains(coordinates.Last()))
+                if (obstacles.Contains(coordinates[coordinates.Count - 1]))
                 {
-                    coordinates.Remove(coordinates.Last());
+                    coordinates.Remove(coordinates[coordinates.Count - 1]);
                     break;
                 }
             };
@@ -28,9 +29,9 @@ namespace AttackSolver
             {
                 coordinates.Add(new Point(startCoords.X, y));
 
-                if (obstacles.Contains(coordinates.Last()))
+                if (obstacles.Contains(coordinates[coordinates.Count - 1]))
                 {
-                    coordinates.Remove(coordinates.Last());
+                    coordinates.Remove(coordinates[coordinates.Count - 1]);
                     break;
                 }
             };
@@ -40,9 +41,9 @@ namespace AttackSolver
             {
                 coordinates.Add(new Point(x, startCoords.Y));
 
-                if (obstacles.Contains(coordinates.Last()))
+                if (obstacles.Contains(coordinates[coordinates.Count - 1]))
                 {
-                    coordinates.Remove(coordinates.Last());
+                    coordinates.Remove(coordinates[coordinates.Count - 1]);
                     break;
                 }
 
@@ -53,9 +54,9 @@ namespace AttackSolver
             {
                 coordinates.Add(new Point(x, startCoords.Y));
 
-                if (obstacles.Contains(coordinates.Last()))
+                if (obstacles.Contains(coordinates[coordinates.Count - 1]))
                 {
-                    coordinates.Remove(coordinates.Last());
+                    coordinates.Remove(coordinates[coordinates.Count - 1]);
                     break;
                 }
             };

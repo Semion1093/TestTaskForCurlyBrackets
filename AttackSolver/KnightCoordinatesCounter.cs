@@ -5,9 +5,9 @@ using System.Linq;
 
 namespace AttackSolver
 {
-    public class KnightCoordinatesCounter : IKnightCoordinatesCounter
+    public class KnightCoordinatesCounter : IMovePiece
     {
-        public int GetNumberOfCoordinates(Size boardSize, Point startCoords, Point[] obstacles)
+        public int GetAvaliableCoordinatesCount(Size boardSize, Point startCoords, Point[] obstacles)
         {
             var coordinates = new List<Point>();
 
@@ -18,73 +18,73 @@ namespace AttackSolver
             if (boardSize.Width >= x || boardSize.Height >= y)
                 coordinates.Add(new Point(x, y));
 
-            if (obstacles.Contains(coordinates.Last()))
-                coordinates.Remove(coordinates.Last());
+            if (obstacles.Contains(coordinates[coordinates.Count - 1]))
+                coordinates.Remove(coordinates[coordinates.Count - 1]);
 
             x = startCoords.X + 2;
             y = startCoords.Y + 1;
 
-            if (boardSize.Width >= x || boardSize.Height >= y)
+            if (boardSize.Width >= x && boardSize.Height >= y)
                 coordinates.Add(new Point(x, y));
 
-            if (obstacles.Contains(coordinates.Last()))
-                coordinates.Remove(coordinates.Last());
+            if (obstacles.Contains(coordinates[coordinates.Count - 1]))
+                coordinates.Remove(coordinates[coordinates.Count - 1]);
 
             //Move down and right
             x = startCoords.X + 1;
             y = startCoords.Y - 2;
 
-            if (boardSize.Width >= x || boardSize.Height >= 1)
+            if (boardSize.Width >= x && y > 0)
                 coordinates.Add(new Point(x, y));
 
-            if (obstacles.Contains(coordinates.Last()))
-                coordinates.Remove(coordinates.Last());
+            if (obstacles.Contains(coordinates[coordinates.Count - 1]))
+                coordinates.Remove(coordinates[coordinates.Count - 1]);
 
             x = startCoords.X + 2;
             y = startCoords.Y - 1;
-            if (boardSize.Width >= x || boardSize.Height >= 1)
+            if (boardSize.Width >= x && y > 0)
                 coordinates.Add(new Point(x, y));
 
-            if (obstacles.Contains(coordinates.Last()))
-                coordinates.Remove(coordinates.Last());
+            if (obstacles.Contains(coordinates[coordinates.Count - 1]))
+                coordinates.Remove(coordinates[coordinates.Count - 1]);
 
             //Move down and left
             x = startCoords.X - 1;
             y = startCoords.Y - 2;
 
-            if (boardSize.Width >= 1 || boardSize.Height >= 1)
+            if (x > 0 && y > 0)
                 coordinates.Add(new Point(x, y));
 
-            if (obstacles.Contains(coordinates.Last()))
-                coordinates.Remove(coordinates.Last());
+            if (obstacles.Contains(coordinates[coordinates.Count - 1]))
+                coordinates.Remove(coordinates[coordinates.Count - 1]);
 
             x = startCoords.X - 2;
             y = startCoords.Y - 1;
 
-            if (boardSize.Width >= 1 || boardSize.Height >= 1)
+            if (x > 0 && y > 0)
                 coordinates.Add(new Point(x, y));
 
-            if (obstacles.Contains(coordinates.Last()))
-                coordinates.Remove(coordinates.Last());
+            if (obstacles.Contains(coordinates[coordinates.Count - 1]))
+                coordinates.Remove(coordinates[coordinates.Count - 1]);
 
             //Move up and left
             x = startCoords.X - 2;
             y = startCoords.Y + 1;
 
-            if (boardSize.Width >= 1 || boardSize.Height >= y)
+            if (x > 0 && boardSize.Height >= y)
                 coordinates.Add(new Point(x, y));
 
-            if (obstacles.Contains(coordinates.Last()))
-                coordinates.Remove(coordinates.Last());
+            if (obstacles.Contains(coordinates[coordinates.Count - 1]))
+                coordinates.Remove(coordinates[coordinates.Count - 1]);
 
             x = startCoords.X - 1;
             y = startCoords.Y + 2;
 
-            if (boardSize.Width >= 1 || boardSize.Height >= y)
+            if (x > 0 && boardSize.Height >= y)
                 coordinates.Add(new Point(x, y));
 
-            if (obstacles.Contains(coordinates.Last()))
-                coordinates.Remove(coordinates.Last());
+            if (obstacles.Contains(coordinates[coordinates.Count - 1]))
+                coordinates.Remove(coordinates[coordinates.Count - 1]);
 
             return coordinates.Count;
         }

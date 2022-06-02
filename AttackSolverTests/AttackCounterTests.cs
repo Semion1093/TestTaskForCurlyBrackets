@@ -1,8 +1,5 @@
 using AttackSolver;
-using AttackSolver.Interfaces;
-using AttackSolver.Tests.TestCaseSource;
 using Interface;
-using Moq;
 using NUnit.Framework;
 using System.Drawing;
 
@@ -10,63 +7,59 @@ namespace AttackSolverTests
 {
     public class AttackCounterTests
     {
-        private Mock<IRookCoordinatesCounter> _rookMock;
-        private Mock<IBishopCoordinatesCounter> _bishopMock;
-        private Mock<IKnightCoordinatesCounter> _knightMock;
-        private MyAttackCounter _attackCounter;
+        private MovePieceFactory _movePieceFactory;
+        private AttackCounter _attackCounter;
 
         [SetUp]
         public void Setup()
         {
-            _rookMock = new Mock<IRookCoordinatesCounter>();
-            _bishopMock = new Mock<IBishopCoordinatesCounter>();
-            _knightMock = new Mock<IKnightCoordinatesCounter>();
-            _attackCounter = new MyAttackCounter(_bishopMock.Object, _knightMock.Object, _rookMock.Object);
+            _movePieceFactory = new MovePieceFactory();
+            _attackCounter = new AttackCounter(_movePieceFactory);
         }
 
-        [TestCaseSource(typeof(CountUnderAttack_Rook_TestCaseSource))]
-        public void CountUnderAttack_Rook_ShouldReturnNumberOfSquares(
-            Size boardSize, Point startCoords, Point[] obstacles, ChessmanType cmType, int expected)
+        [Test]
+        public void CountUnderAttack_Rook_ShouldReturnNumberOfSquares()
         {
-            //given
-            _rookMock.Setup(x => x.GetNumberOfCoordinates(boardSize, startCoords, obstacles)).Returns(4);
+            //given 
+            Size boardSize = new(10, 10);
+            Point startCoords = new(2, 2);
+            var obstacles = new Point[] { new Point(2, 5), new Point(5, 2) };
+            var expected = 6;
 
             //when
-            var actual = _attackCounter.CountUnderAttack(cmType, boardSize, startCoords, obstacles);
+            var actual = _attackCounter.CountUnderAttack(ChessmanType.Rook, boardSize, startCoords, obstacles);
 
             //then
-            Assert.That(expected, Is.EqualTo(actual));
-            _rookMock.Verify(x => x.GetNumberOfCoordinates(boardSize, startCoords, obstacles), Times.Once);
+            Assert.That(actual, Is.EqualTo(expected));
         }
 
-        [TestCaseSource(typeof(CountUnderAttack_Bishop_TestCaseSource))]
-        public void CountUnderAttack_Bishop_ShouldReturnNumberOfSquares(
-            Size boardSize, Point startCoords, Point[] obstacles, ChessmanType cmType, int expected)
+        [Test]
+        public void CountUnderAttack_Bishop_ShouldReturnNumberOfSquares()
         {
             //given
-            _bishopMock.Setup(x => x.GetNumberOfCoordinates(boardSize, startCoords, obstacles)).Returns(4);
+            Size boardSize = new(10, 10);
+            Point startCoords = new(2, 2);
+            var obstacles = new Point[] { new Point(5, 5) };
+            var expected = 5;
 
             //when
-            var actual = _attackCounter.CountUnderAttack(cmType, boardSize, startCoords, obstacles);
+            var actual = _attackCounter.CountUnderAttack(ChessmanType.Bishop, boardSize, startCoords, obstacles);
 
             //then
-            Assert.That(expected, Is.EqualTo(actual));
-            _bishopMock.Verify(x => x.GetNumberOfCoordinates(boardSize, startCoords, obstacles), Times.Once);
+            Assert.That(actual, Is.EqualTo(expected));
         }
 
-        [TestCaseSource(typeof(CountUnderAttack_Knight_TestCaseSource))]
-        public void CountUnderAttack_Knight_ShouldReturnNumberOfSquares(
-            Size boardSize, Point startCoords, Point[] obstacles, ChessmanType cmType, int expected)
+        [Test]
+        public void CountUnderAttack_Knight_ShouldReturnNumberOfSquares()
         {
             //given
-            _knightMock.Setup(x => x.GetNumberOfCoordinates(boardSize, startCoords, obstacles)).Returns(4);
+            Size boardSize = new(10, 10);
+            Point startCoords = new(2, 3);
+            var obstacles = new Point[] { new Point(1, 1), new Point(3, 1) };
+            var expected = 4;
+            var actual = _attackCounter.CountUnderAttack(ChessmanType.Knight, boardSize, startCoords, obstacles);
 
-            //when
-            var actual = _attackCounter.CountUnderAttack(cmType, boardSize, startCoords, obstacles);
-
-            //then
-            Assert.That(expected, Is.EqualTo(actual));
-            _knightMock.Verify(x => x.GetNumberOfCoordinates(boardSize, startCoords, obstacles), Times.Once);
+            Assert.That(actual, Is.EqualTo(expected));
         }
     }
 }
